@@ -14,12 +14,13 @@ const App = () => {
   const [rounds, setRounds] = useState<Round[]>(initialRounds);
   const [totalPoints, setTotalPoints] = useState<ScoreDetail[]>(initialTotalPoints);
   const [scores, setScores] = useState<Score[]>(initialScores);
+  const [changedPlayerId, setChangedPlayerId] = useState<number | null>(null);
 
   return (
     <>
       <Header title='MPC Nepal'></Header >
-      <Setup {...{ players, setPlayers, rate, setRate }}></Setup>
-      <Calculator {...{ players, scores, setScores, totalPoints, setTotalPoints, initialRound }}></Calculator>
+      <Setup {...{ players, setPlayers, rate, setRate, changedPlayerId, setChangedPlayerId }}></Setup>
+      <Calculator {...{ players, scores, setScores, totalPoints, setTotalPoints, initialRound, changedPlayerId, setChangedPlayerId }}></Calculator>
       <Result {...{ players, rate, scores, totalPoints }}></Result>
     </>
   )

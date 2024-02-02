@@ -1,15 +1,32 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Player, Round, RoundDetail, Score, ScoreDetail } from "../models";
 
-const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, initialRound }
+const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, initialRound, changedPlayerId, setChangedPlayerId }
     : {
         players: Player[],
         scores: Score[], setScores: Dispatch<SetStateAction<Score[]>>,
         totalPoints: ScoreDetail[], setTotalPoints: Dispatch<SetStateAction<ScoreDetail[]>>,
-        initialRound: Round
+        initialRound: Round,
+        changedPlayerId: number | null, setChangedPlayerId: Dispatch<SetStateAction<number | null>>
 
     }) => {
     const [round, setRound] = useState<Round>(initialRound);
+
+    // Keep track of players to update the Round
+    useEffect(() => {
+        if (changedPlayerId !== null) {
+            setRound(prevRound => ({
+                ...prevRound,
+                roundDetails: prevRound.roundDetails.some(roundDetail => roundDetail.playerId === changedPlayerId) ?
+                    // Update existing 
+                    [...prevRound.roundDetails]
+                    :
+                    // Create new if not exists
+                    [...prevRound.roundDetails,
+                    { playerId: changedPlayerId, maal: 0, seen: false, winner: false, dubli: false }]
+            }));
+        }
+    }, [players, changedPlayerId])
 
     const handlePointInputChange = (id: number, e: any) => {
         setRound(prevRound => ({
@@ -54,19 +71,16 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
 
     const centerCalculation = (round: Round): Score => {
         const playerCount = round.roundDetails.length;
-
         const isDubliWinner = round.roundDetails.some(roundDetail => roundDetail.winner && roundDetail.dubli);
-        let totalMaal = round.roundDetails.reduce((totalMaal, roundDetail) => totalMaal + roundDetail.maal, 0);
+
+        let totalMaal = round.roundDetails.reduce((totalMaal, roundDetail) => totalMaal + Number(roundDetail.maal), 0);
         totalMaal = isDubliWinner ? totalMaal + 5 : totalMaal;
 
-        alert(totalMaal);
         const updatedScoreDetails: ScoreDetail[] = round.roundDetails.map(
             roundDetail => {
-
                 const finalPoint = (totalMaal +
                     (roundDetail.seen ? (roundDetail.dubli ? 0 : 3) : 10) -
                     (roundDetail.maal * playerCount)) * -1;
-
                 return {
                     playerId: roundDetail.playerId,
                     point: roundDetail.winner ? 0 : finalPoint
@@ -111,6 +125,7 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
         });
         return totalPoints;
     }
+
     const handleCalculateClick = () => {
 
         const updatedScore: Score = centerCalculation(round);
@@ -148,7 +163,7 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
                     Maal
                     <input
                         key={player.playerId}
-                        value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal}
+                        value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal ?? 0}
                         onChange={(e) => handlePointInputChange(player.playerId, e)}
                     />
                     {renderCheckbox('Seen', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen ?? false)}
@@ -158,7 +173,9 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
             ))
         }
         {JSON.stringify(round)}
-        <button onClick={handleCalculateClick}>Calculate</button>
+        <div>
+            <button onClick={handleCalculateClick}>Calculate</button>
+        </div>
     </>);
 }
 export default Calculator;

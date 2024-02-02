@@ -2,21 +2,19 @@
 import { Dispatch, SetStateAction } from "react";
 import { Player } from "../models";
 
-const Setup = ({ players, setPlayers, rate, setRate }
+const Setup = ({ players, setPlayers, rate, setRate, changedPlayerId, setChangedPlayerId }
     : {
         players: Player[], setPlayers: Dispatch<SetStateAction<Player[]>>,
         rate: number, setRate: Dispatch<SetStateAction<number>>
+        changedPlayerId: number | null, setChangedPlayerId: Dispatch<SetStateAction<number | null>>
     }) => {
     const handleNameInputChange = (id: number, e: any) => {
-        if (!players.some(player => player.playerId === id)) {
-            setPlayers([...players, { playerId: id, name: e.target.value }]);
-        }
+        setPlayers(players.some(player => player.playerId === id) ?
+            prevPlayers => prevPlayers.map(player => player.playerId === id ? { ...player, name: e.target.value } : player) :
+            [...players, { playerId: id, name: e.target.value }]
+        );
 
-        const currentPlayer = players.find(player => player.playerId === id);
-        if (currentPlayer) {
-            const updatedPlayer: Player = { ...currentPlayer, name: e.target.value };
-            setPlayers(prevPlayers => prevPlayers.map(player => player.playerId === updatedPlayer.playerId ? updatedPlayer : player));
-        }
+        setChangedPlayerId(id);
     }
 
     const handleNameInputBlur = (id: number, e: any) => {
