@@ -1,51 +1,55 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Player, Round, RoundDetail, Score, ScoreDetail } from "../models";
 
-const Calculator = ({ players, round, setRound, scores, setScores, totalPoints, setTotalPoints }
+const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, initialRound }
     : {
         players: Player[],
-        round: Round, setRound: Dispatch<SetStateAction<Round>>,
-        scores: Score[], setScores: Dispatch<SetStateAction<Score[]>>
-        totalPoints: ScoreDetail[], setTotalPoints: Dispatch<SetStateAction<ScoreDetail[]>>
+        scores: Score[], setScores: Dispatch<SetStateAction<Score[]>>,
+        totalPoints: ScoreDetail[], setTotalPoints: Dispatch<SetStateAction<ScoreDetail[]>>,
+        initialRound: Round
+
     }) => {
+    const [round, setRound] = useState<Round>(initialRound);
+
     const handlePointInputChange = (id: number, e: any) => {
-        const updatedRound = {
-            roundId: round.roundId,
-            roundDetails: round.roundDetails.map(roundDetail =>
-                roundDetail.playerId === id ?
-                    { ...roundDetail, maal: Number(e.target.value) } : roundDetail)
-        };
-        setRound(updatedRound);
-    }
-    //TODO: combine Inputchanges into single function
-    const handleSeenInputChange = (id: number, e: any) => {
-        const updatedRound = {
-            roundId: round.roundId,
-            roundDetails: round.roundDetails.map(roundDetail =>
-                roundDetail.playerId === id ?
-                    { ...roundDetail, seen: e.target.checked } : roundDetail)
-        };
-        setRound(updatedRound);
+        setRound(prevRound => ({
+            ...prevRound,
+            roundDetails: prevRound.roundDetails.some(roundDetail => roundDetail.playerId === id) ?
+                // Update existing 
+                prevRound.roundDetails.map(roundDetail =>
+                    roundDetail.playerId === id ?
+                        { ...roundDetail, maal: e.target.value } :
+                        roundDetail)
+                :
+                // Create new if not exists
+                [...prevRound.roundDetails,
+                { playerId: id, maal: e.target.value, seen: false, winner: false, dubli: false }]
+        }));
     }
 
-    const handleWinnerInputChange = (id: number, e: any) => {
-        const updatedRound = {
-            roundId: round.roundId,
-            roundDetails: round.roundDetails.map(roundDetail =>
-                roundDetail.playerId === id ?
-                    { ...roundDetail, winner: e.target.checked } : roundDetail)
-        };
-        setRound(updatedRound);
-    }
-
-    const handleDubliInputChange = (id: number, e: any) => {
-        const updatedRound = {
-            roundId: round.roundId,
-            roundDetails: round.roundDetails.map(roundDetail =>
-                roundDetail.playerId === id ?
-                    { ...roundDetail, dubli: e.target.checked } : roundDetail)
-        };
-        setRound(updatedRound);
+    const handleCheckboxInputChange = (id: number, checkboxName: string, e: any) => {
+        setRound(prevRound => ({
+            ...prevRound,
+            roundDetails: prevRound.roundDetails.some(roundDetail => roundDetail.playerId === id) ?
+                // Update existing 
+                prevRound.roundDetails.map(roundDetail =>
+                    roundDetail.playerId === id ?
+                        {
+                            ...roundDetail,
+                            [checkboxName.toLowerCase()]: e.target.checked
+                        } :
+                        roundDetail)
+                :
+                // Create new if not exists
+                [...prevRound.roundDetails,
+                {
+                    playerId: id,
+                    maal: 0,
+                    seen: checkboxName.toLowerCase() === 'seen' && e.target.checked,
+                    winner: checkboxName.toLowerCase() === 'winner' && e.target.checked,
+                    dubli: checkboxName.toLowerCase() === 'dubli' && e.target.checked
+                }]
+        }));
     }
 
     const centerCalculation = (round: Round): Score => {
@@ -125,32 +129,31 @@ const Calculator = ({ players, round, setRound, scores, setScores, totalPoints, 
 
     }
 
+    const renderCheckbox = (checkboxName: string, playerId: number, value: boolean) => (
+        <div key={checkboxName}>
+            <input
+                key={checkboxName}
+                checked={value}
+                onChange={(e) => handleCheckboxInputChange(playerId, checkboxName, e)} type="checkbox" />
+            {checkboxName}
+        </div>
+    )
+
     return (<>
         <h2>Point Entry</h2>
         {
             players.map(player => (
                 <div key={player.playerId}>
                     {player.name}
-                    Points
+                    Maal
                     <input
                         key={player.playerId}
                         value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal}
                         onChange={(e) => handlePointInputChange(player.playerId, e)}
                     />
-
-                    <input
-                        checked={round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen}
-                        onChange={(e) => handleSeenInputChange(player.playerId, e)} type="checkbox" />
-                    Seen
-
-                    <input
-                        checked={round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.winner}
-                        onChange={(e) => handleWinnerInputChange(player.playerId, e)} type="checkbox" />
-                    Winner
-                    <input
-                        checked={round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.dubli}
-                        onChange={(e) => handleDubliInputChange(player.playerId, e)} type="checkbox" />
-                    Dubli
+                    {renderCheckbox('Seen', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen ?? false)}
+                    {renderCheckbox('Winner', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.winner ?? false)}
+                    {renderCheckbox('Dubli', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.dubli ?? false)}
                 </div>
             ))
         }
