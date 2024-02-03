@@ -2,18 +2,17 @@
 import { Dispatch, SetStateAction } from "react";
 import { Player } from "../models";
 
-const Setup = ({ players, setPlayers, rate, setRate, changedPlayerId, setChangedPlayerId }
+const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
     : {
         players: Player[], setPlayers: Dispatch<SetStateAction<Player[]>>,
         rate: number, setRate: Dispatch<SetStateAction<number>>
-        changedPlayerId: number | null, setChangedPlayerId: Dispatch<SetStateAction<number | null>>
+        setChangedPlayerId: Dispatch<SetStateAction<number | null>>
     }) => {
     const handleNameInputChange = (id: number, e: any) => {
         setPlayers(players.some(player => player.playerId === id) ?
             prevPlayers => prevPlayers.map(player => player.playerId === id ? { ...player, name: e.target.value } : player) :
             [...players, { playerId: id, name: e.target.value }]
         );
-
         setChangedPlayerId(id);
     }
 
@@ -36,7 +35,6 @@ const Setup = ({ players, setPlayers, rate, setRate, changedPlayerId, setChanged
                 onChange={(e) => handleNameInputChange(id, e)}
                 onBlur={(e) => handleNameInputBlur(id, e)} />
         </div>
-
     )
 
     return (<>
@@ -47,11 +45,8 @@ const Setup = ({ players, setPlayers, rate, setRate, changedPlayerId, setChanged
         {renderPlayerInput(4)}
         {renderPlayerInput(5)}
         {renderPlayerInput(6)}
-        {JSON.stringify(players)}
+        Rate<input value={rate} onChange={handleRateInputChange}></input>
 
-        <p>Rate</p>
-        <input value={rate} onChange={handleRateInputChange}></input>
-        {JSON.stringify(rate)}
     </>);
 }
 export default Setup;

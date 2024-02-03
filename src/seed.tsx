@@ -11,34 +11,6 @@ export const seedData = () => {
     ];
     const initialRate = 0.25;
 
-    const initialRounds: Round[] = [
-        // {
-        //     roundId: 1,
-        //     roundDetails: [
-        //         { playerId: 1, maal: 10, seen: true, winner: true, dubli: false },
-        //         { playerId: 2, maal: 5, seen: true, winner: false, dubli: false },
-        //         { playerId: 3, maal: 0, seen: false, winner: false, dubli: false },
-        //         { playerId: 4, maal: 0, seen: false, winner: false, dubli: false },
-        //     ]
-        // }, {
-        //     roundId: 2,
-        //     roundDetails: [
-        //         { playerId: 1, maal: 0, seen: false, winner: false, dubli: false },
-        //         { playerId: 2, maal: 15, seen: true, winner: true, dubli: false },
-        //         { playerId: 3, maal: 5, seen: false, winner: false, dubli: false },
-        //         { playerId: 4, maal: 8, seen: true, winner: false, dubli: false },
-        //     ]
-        // }, {
-        //     roundId: 3,
-        //     roundDetails: [
-        //         { playerId: 1, maal: 8, seen: true, winner: false, dubli: false },
-        //         { playerId: 2, maal: 5, seen: true, winner: false, dubli: false },
-        //         { playerId: 3, maal: 2, seen: true, winner: true, dubli: false },
-        //         { playerId: 4, maal: 4, seen: true, winner: false, dubli: false },
-        //     ]
-        // }
-    ];
-
     const initialRound: Round = {
         roundId: 1,
         roundDetails: [
@@ -85,5 +57,5 @@ export const seedData = () => {
         // { playerId: 3, point: 30 },
         // { playerId: 4, point: 40 },
     ];
-    return { initialPlayers, initialRate, initialRounds, initialTotalPoints, initialRound, initialScores };
+    return { initialPlayers, initialRate, initialTotalPoints, initialRound, initialScores };
 }

@@ -1,11 +1,11 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Player, Round, RoundDetail, Score, ScoreDetail } from "../models";
 
-const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, initialRound, changedPlayerId, setChangedPlayerId }
+const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, changedPlayerId, setChangedPlayerId }
     : {
         players: Player[],
         scores: Score[], setScores: Dispatch<SetStateAction<Score[]>>,
-        totalPoints: ScoreDetail[], setTotalPoints: Dispatch<SetStateAction<ScoreDetail[]>>,
+        setTotalPoints: Dispatch<SetStateAction<ScoreDetail[]>>,
         initialRound: Round,
         changedPlayerId: number | null, setChangedPlayerId: Dispatch<SetStateAction<number | null>>
 
@@ -127,7 +127,6 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
     }
 
     const handleCalculateClick = () => {
-
         const updatedScore: Score = centerCalculation(round);
         setScores([...scores, updatedScore]);
 
@@ -145,13 +144,13 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
     }
 
     const renderCheckbox = (checkboxName: string, playerId: number, value: boolean) => (
-        <div key={checkboxName}>
+        <>
             <input
                 key={checkboxName}
                 checked={value}
                 onChange={(e) => handleCheckboxInputChange(playerId, checkboxName, e)} type="checkbox" />
             {checkboxName}
-        </div>
+        </>
     )
 
     return (<>
@@ -159,7 +158,7 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
         {
             players.map(player => (
                 <div key={player.playerId}>
-                    {player.name}
+                    <div>{player.name}</div>
                     Maal
                     <input
                         key={player.playerId}
@@ -172,7 +171,6 @@ const Calculator = ({ players, scores, setScores, totalPoints, setTotalPoints, i
                 </div>
             ))
         }
-        {JSON.stringify(round)}
         <div>
             <button onClick={handleCalculateClick}>Calculate</button>
         </div>

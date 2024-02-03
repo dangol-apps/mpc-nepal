@@ -7,11 +7,10 @@ import Calculator from "./components/Calculator";
 import Result from "./components/Result";
 
 const App = () => {
-  const { initialPlayers, initialRate, initialRounds, initialTotalPoints, initialRound, initialScores } = seedData();
+  const { initialPlayers, initialRate, initialTotalPoints, initialRound, initialScores } = seedData();
 
   const [players, setPlayers] = useState<Player[]>(initialPlayers);
   const [rate, setRate] = useState<number>(initialRate);
-  const [rounds, setRounds] = useState<Round[]>(initialRounds);
   const [totalPoints, setTotalPoints] = useState<ScoreDetail[]>(initialTotalPoints);
   const [scores, setScores] = useState<Score[]>(initialScores);
   const [changedPlayerId, setChangedPlayerId] = useState<number | null>(null);
