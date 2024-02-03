@@ -1,0 +1,85 @@
+body {
+    background-color: #222;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    margin: 0rem;
+}
+
+h1 {
+    color: orange;
+}
+
+h1.title {
+    background-color: gray;
+    margin: 0rem;
+    height: 2rem;
+    padding: 2rem;
+}
+
+.player-setup {
+    display: flex;
+    flex-direction: column;
+    margin: 0.9rem;
+
+}
+
+.rate-setup {
+    display: flex;
+    flex-direction: column;
+    margin: 0.9rem;
+    align-items: center;
+}
+
+.point-entry-main {
+    display: inline-flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    border: 1px solid white;
+    background-color: #3a3a3a;
+}
+
+h2 {
+    color: green;
+}
+
+input {
+    color: blue;
+    margin: 0.4rem;
+}
+
+button {
+    color: whitesmoke;
+    background-color: red;
+    border: 1px solid white;
+    margin: 1rem;
+}
+
+table,
+th,
+td {
+    color: yellow;
+    border: 0.5px solid white;
+    border-collapse: collapse;
+    margin: 0rem;
+    width: 100%;
+    padding: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+th {
+    color: orangered;
+    background-color: #444;
+}
+
+td.total-point-row {
+    background-color: #777;
+    color: white;
+}
+
+td.total-amount-row {
+    color: white;
+    background-color: red;
+
+}

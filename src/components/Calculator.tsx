@@ -155,22 +155,26 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
 
     return (<>
         <h2>Point Entry</h2>
-        {
-            players.map(player => (
-                <div key={player.playerId}>
-                    <div>{player.name}</div>
-                    Maal
-                    <input
-                        key={player.playerId}
-                        value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal ?? 0}
-                        onChange={(e) => handlePointInputChange(player.playerId, e)}
-                    />
-                    {renderCheckbox('Seen', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen ?? false)}
-                    {renderCheckbox('Winner', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.winner ?? false)}
-                    {renderCheckbox('Dubli', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.dubli ?? false)}
-                </div>
-            ))
-        }
+        <div className="point-entry-main">
+            {
+                players.map(player => (
+                    <div key={player.playerId}>
+                        <h3>{player.name}</h3>
+                        Maal
+                        <input
+                            key={player.playerId}
+                            value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal ?? 0}
+                            onChange={(e) => handlePointInputChange(player.playerId, e)}
+                        />
+                        <div>
+                            {renderCheckbox('Seen', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen ?? false)}
+                            {renderCheckbox('Winner', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.winner ?? false)}
+                            {renderCheckbox('Dubli', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.dubli ?? false)}
+                        </div>
+                    </div>
+                ))
+            }
+        </div>
         <div>
             <button onClick={handleCalculateClick}>Calculate</button>
         </div>

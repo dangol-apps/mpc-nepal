@@ -39,13 +39,17 @@ const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
 
     return (<>
         <h2>Setup</h2>
-        {renderPlayerInput(1)}
-        {renderPlayerInput(2)}
-        {renderPlayerInput(3)}
-        {renderPlayerInput(4)}
-        {renderPlayerInput(5)}
-        {renderPlayerInput(6)}
-        Rate<input value={rate} onChange={handleRateInputChange}></input>
+        <div className="player-setup">
+            {renderPlayerInput(1)}
+            {renderPlayerInput(2)}
+            {renderPlayerInput(3)}
+            {renderPlayerInput(4)}
+            {renderPlayerInput(5)}
+            {renderPlayerInput(6)}
+        </div>
+        <div className="rate-setup">
+            Rate<input value={rate} onChange={handleRateInputChange}></input>
+        </div>
 
     </>);
 }

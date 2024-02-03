@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Setup from "./components/Setup";
 import Calculator from "./components/Calculator";
 import Result from "./components/Result";
+import './App.css'
 
 const App = () => {
   const { initialPlayers, initialRate, initialTotalPoints, initialRound, initialScores } = seedData();

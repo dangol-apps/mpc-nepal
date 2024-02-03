@@ -20,12 +20,12 @@ const Result = ({ players, rate, scores, totalPoints }
                         }
                     </tr>)}
                 <tr>
-                    <td>Total Point</td>
-                    {totalPoints.map(totalPoint => <td key={totalPoint.playerId}>{totalPoint.point}</td>)}
+                    <td className="total-point-row">Total Point</td>
+                    {totalPoints.map(totalPoint => <td className="total-point-row" key={totalPoint.playerId}>{totalPoint.point}</td>)}
                 </tr>
                 <tr>
-                    <td>Total Amount</td>
-                    {totalPoints.map(totalPoint => <td key={totalPoint.playerId}>${totalPoint.point * rate}</td>)}
+                    <td className="total-amount-row">Total Amount</td>
+                    {totalPoints.map(totalPoint => <td className="total-amount-row" key={totalPoint.playerId}>${totalPoint.point * rate}</td>)}
                 </tr>
             </tbody>
         </table >
