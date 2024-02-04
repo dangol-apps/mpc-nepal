@@ -159,8 +159,9 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
             {
                 players.map(player => (
                     <div key={player.playerId}>
-                        <h3>{player.name}</h3>
+
                         <div className="point-entry-player">
+                            <h4>{player.name}</h4>
                             <TextField
                                 label='Maal'
                                 variant="outlined"
