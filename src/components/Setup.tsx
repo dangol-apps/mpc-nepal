@@ -1,6 +1,7 @@
 
 import { Dispatch, SetStateAction } from "react";
 import { Player } from "../models";
+import { TextField } from "@mui/material";
 
 const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
     : {
@@ -27,14 +28,18 @@ const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
     }
 
     const renderPlayerInput = (id: number) => (
-        <div>
-            Player#{id}
-            <input
-                id={String(id)}
-                value={players.find(player => player.playerId === id)?.name ?? ''}
-                onChange={(e) => handleNameInputChange(id, e)}
-                onBlur={(e) => handleNameInputBlur(id, e)} />
-        </div>
+
+        <TextField
+            label={`Player#${id}`}
+            variant="outlined"
+            type="text"
+            fullWidth
+            placeholder={`Enter player#${id} name`}
+            id={String(id)}
+            value={players.find(player => player.playerId === id)?.name ?? ''}
+            onChange={(e) => handleNameInputChange(id, e)}
+            onBlur={(e) => handleNameInputBlur(id, e)} />
+
     )
 
     return (<>
@@ -48,7 +53,15 @@ const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
             {renderPlayerInput(6)}
         </div>
         <div className="rate-setup">
-            Rate<input value={rate} onChange={handleRateInputChange}></input>
+            <TextField
+                label='Rate'
+                variant="outlined"
+                type="text"
+                fullWidth
+                placeholder='Enter Rate'
+
+                value={rate}
+                onChange={handleRateInputChange} />
         </div>
 
     </>);

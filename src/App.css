@@ -6,22 +6,23 @@ body {
     margin: 0rem;
 }
 
-h1 {
-    color: orange;
-}
-
 h1.title {
-    background-color: gray;
-    margin: 0rem;
-    height: 2rem;
+    background-color: #444;
+    margin: 0.9rem;
+    height: 3rem;
     padding: 2rem;
+    border: 1px solid grey;
+    color: #000;
+    font-size: 3rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 
 .player-setup {
     display: flex;
     flex-direction: column;
     margin: 0.9rem;
-
+    row-gap: 0.75rem;
+    border: 1px solid grey;
 }
 
 .rate-setup {
@@ -29,57 +30,72 @@ h1.title {
     flex-direction: column;
     margin: 0.9rem;
     align-items: center;
+    border: 1px solid grey;
 }
 
 .point-entry-main {
-    display: inline-flex;
+    display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: center;
-    border: 1px solid white;
-    background-color: #3a3a3a;
+    border: 1px solid grey;
+    background-color: #1d1d1d;
+    margin: 0.9rem;
+}
+
+.point-entry-player {
+    padding: 0.8rem;
+    border: 1px solid grey;
+    margin: 0.9rem;
+    background-color: #333;
+}
+
+.point-entry-checkbox {
+    padding: 0.5rem;
+    margin: 0.9rem;
+    border: 1px dotted grey;
+    background-color: #555;
 }
 
 h2 {
-    color: green;
+    color: #999;
+    text-decoration: underline;
 }
 
-input {
-    color: blue;
-    margin: 0.4rem;
-}
-
-button {
+h3 {
     color: whitesmoke;
-    background-color: red;
-    border: 1px solid white;
-    margin: 1rem;
+
 }
+
+
 
 table,
 th,
 td {
-    color: yellow;
-    border: 0.5px solid white;
+    color: green;
+    border: 0.5px solid grey;
     border-collapse: collapse;
     margin: 0rem;
     width: 100%;
     padding: 5px;
+    background-color: #111;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
 th {
-    color: orangered;
+    color: white;
     background-color: #444;
 }
 
 td.total-point-row {
-    background-color: #777;
-    color: white;
+    background-color: #222;
+    color: greenyellow;
 }
 
 td.total-amount-row {
     color: white;
     background-color: red;
+    text-shadow: #222;
+    font-style: italic;
 
 }

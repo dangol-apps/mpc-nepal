@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Player, Round, RoundDetail, Score, ScoreDetail } from "../models";
+import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
 const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, changedPlayerId, setChangedPlayerId }
     : {
@@ -144,13 +145,12 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
     }
 
     const renderCheckbox = (checkboxName: string, playerId: number, value: boolean) => (
-        <>
-            <input
-                key={checkboxName}
-                checked={value}
-                onChange={(e) => handleCheckboxInputChange(playerId, checkboxName, e)} type="checkbox" />
-            {checkboxName}
-        </>
+        <FormControlLabel
+            control={
+                <Checkbox
+                    checked={value}
+                    onChange={(e) => handleCheckboxInputChange(playerId, checkboxName, e)} />}
+            label={checkboxName} />
     )
 
     return (<>
@@ -160,23 +160,31 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
                 players.map(player => (
                     <div key={player.playerId}>
                         <h3>{player.name}</h3>
-                        Maal
-                        <input
-                            key={player.playerId}
-                            value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal ?? 0}
-                            onChange={(e) => handlePointInputChange(player.playerId, e)}
-                        />
-                        <div>
-                            {renderCheckbox('Seen', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen ?? false)}
-                            {renderCheckbox('Winner', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.winner ?? false)}
-                            {renderCheckbox('Dubli', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.dubli ?? false)}
+                        <div className="point-entry-player">
+                            <TextField
+                                label='Maal'
+                                variant="outlined"
+                                type="text"
+                                placeholder={`Enter ${player.name}'s Maal`}
+                                key={player.playerId}
+                                value={round.roundDetails.find(score => score.playerId === player.playerId)?.maal ?? 0}
+                                onChange={(e) => handlePointInputChange(player.playerId, e)}
+                            />
+                            <div className="point-entry-checkbox">
+                                {renderCheckbox('Seen', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.seen ?? false)}
+                                {renderCheckbox('Winner', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.winner ?? false)}
+                                {renderCheckbox('Dubli', player.playerId, round.roundDetails.find(roundDetail => roundDetail.playerId === player.playerId)?.dubli ?? false)}
+                            </div>
                         </div>
                     </div>
                 ))
             }
         </div>
         <div>
-            <button onClick={handleCalculateClick}>Calculate</button>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleCalculateClick}>Calculate</Button>
         </div>
     </>);
 }
