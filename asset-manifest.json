@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mpc-nepal/static/css/main.c30a4e5e.css",
+    "main.js": "/mpc-nepal/static/js/main.c1c272e8.js",
+    "index.html": "/mpc-nepal/index.html",
+    "main.c30a4e5e.css.map": "/mpc-nepal/static/css/main.c30a4e5e.css.map",
+    "main.c1c272e8.js.map": "/mpc-nepal/static/js/main.c1c272e8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.c30a4e5e.css",
+    "static/js/main.c1c272e8.js"
+  ]
+}
