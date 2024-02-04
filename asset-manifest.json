@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/mpc-nepal/static/css/main.b225c049.css",
-    "main.js": "/mpc-nepal/static/js/main.f70f1c80.js",
+    "main.css": "/mpc-nepal/static/css/main.a7f0ac7c.css",
+    "main.js": "/mpc-nepal/static/js/main.2a1d97ad.js",
     "index.html": "/mpc-nepal/index.html",
-    "main.b225c049.css.map": "/mpc-nepal/static/css/main.b225c049.css.map",
-    "main.f70f1c80.js.map": "/mpc-nepal/static/js/main.f70f1c80.js.map"
+    "main.a7f0ac7c.css.map": "/mpc-nepal/static/css/main.a7f0ac7c.css.map",
+    "main.2a1d97ad.js.map": "/mpc-nepal/static/js/main.2a1d97ad.js.map"
   },
   "entrypoints": [
-    "static/css/main.b225c049.css",
-    "static/js/main.f70f1c80.js"
+    "static/css/main.a7f0ac7c.css",
+    "static/js/main.2a1d97ad.js"
   ]
 }
