@@ -1,7 +1,7 @@
-import { Player, Score, ScoreDetail } from "../models";
+import { Player, Score, ScoreDetail } from "../models/models";
 
-const Result = ({ players, rate, scores, totalPoints }
-    : { players: Player[], rate: number, scores: Score[], totalPoints: ScoreDetail[] }) => {
+const Result = ({ players, rate, scores, totalScores }
+    : { players: Player[], rate: number, scores: Score[], totalScores: ScoreDetail[] }) => {
     return (<>
         <h2>Score</h2>
         <table>
@@ -21,14 +21,16 @@ const Result = ({ players, rate, scores, totalPoints }
                     </tr>)}
                 <tr>
                     <td className="total-point-row">Total Point</td>
-                    {totalPoints.map(totalPoint => <td className="total-point-row" key={totalPoint.playerId}>{totalPoint.point}</td>)}
+                    {totalScores.map(totalPoint => <td className="total-point-row" key={totalPoint.playerId}>{totalPoint.point}</td>)}
                 </tr>
                 <tr>
                     <td className="total-amount-row">Total Amount</td>
-                    {totalPoints.map(totalPoint => <td className="total-amount-row" key={totalPoint.playerId}>${totalPoint.point * rate}</td>)}
+                    {totalScores.map(totalPoint => <td className="total-amount-row" key={totalPoint.playerId}>${totalPoint.point * rate}</td>)}
                 </tr>
             </tbody>
         </table >
+        {/* <div className="debug-json">{'scores: ' + JSON.stringify(scores)}</div>
+        <div className="debug-json">{'totalScores: ' + JSON.stringify(totalScores)}</div> */}
     </>);
 }
 export default Result;

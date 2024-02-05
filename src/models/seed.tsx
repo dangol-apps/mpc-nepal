@@ -1,17 +1,24 @@
 import { Player, Round, Score, ScoreDetail } from "./models";
 
-export const seedData = () => {
-    const initialPlayers: Player[] = [
+export const initialPlayers = (): Player[] => {
+    const mockPlayers: Player[] = [
         // { playerId: 1, name: 'Adam' },
         // { playerId: 2, name: 'Ben' },
         // { playerId: 3, name: 'Cathey' },
-        // { playerId: 4, name: 'Dan' },
-        // { playerId: 5, name: 'Dan' },
-        // { playerId: 6, name: 'Dan' },
+        // { playerId: 4, name: 'Dan' }
     ];
-    const initialRate = 0.25;
+    const players = JSON.parse(localStorage.getItem('players') ?? '[]') as Player[];
+    return players.length === 0 ? mockPlayers : players;
+}
 
-    const initialRound: Round = {
+export const initialRate = (): number => {
+    const mockRate: string = '0.25';
+    localStorage.setItem('rate', '0.25');
+    return JSON.parse(localStorage.getItem('rate')?.toString() ?? mockRate) as number;
+}
+
+export const initialRound = (): Round => {
+    const mockRound: Round = {
         roundId: 1,
         roundDetails: [
             //{ playerId: 1, maal: 0, seen: false, winner: false, dubli: false },
@@ -19,9 +26,14 @@ export const seedData = () => {
             // { playerId: 3, maal: 4, seen: true, winner: true, dubli: true },
             // { playerId: 4, maal: 0, seen: false, winner: false, dubli: false },
         ]
-    };
+    }
+    const round = JSON.parse(localStorage.getItem('round') ?? '{}');
+    return JSON.stringify(round) === '{}' ? mockRound : round;
+}
 
-    const initialScores: Score[] = [
+export const initialScores = () => {
+
+    const mockScores: Score[] = [
         // {
         //     roundId: 1,
         //     scoreDetails: [
@@ -40,22 +52,18 @@ export const seedData = () => {
         //         { playerId: 4, point: 41 },
         //     ]
         // },
-        // {
-        //     roundId: 3,
-        //     scoreDetails: [
-        //         { playerId: 1, point: 12 },
-        //         { playerId: 2, point: 22 },
-        //         { playerId: 3, point: 32 },
-        //         { playerId: 4, point: 42 },
-        //     ]
-        // },
     ];
+    const scores = JSON.parse(localStorage.getItem('scores') ?? '[]') as Score[];
+    return scores.length === 0 ? mockScores : scores;
+}
 
-    const initialTotalPoints: ScoreDetail[] = [
+export const initialTotalScore = () => {
+    const mockTotalScore: ScoreDetail[] = [
         // { playerId: 1, point: 10 },
         // { playerId: 2, point: 20 },
         // { playerId: 3, point: 30 },
         // { playerId: 4, point: 40 },
     ];
-    return { initialPlayers, initialRate, initialTotalPoints, initialRound, initialScores };
+    const scores = localStorage.getItem('totalScores');
+    return !scores || scores == null ? mockTotalScore : JSON.parse(scores)
 }

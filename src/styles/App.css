@@ -50,6 +50,19 @@ h1.title {
     background-color: #555;
 }
 
+.debug-json {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: black;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 1rem;
+    border: 1px solid white;
+    padding: 1rem;
+
+}
+
 h2 {
     color: #999;
 }

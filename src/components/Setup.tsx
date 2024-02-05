@@ -1,34 +1,45 @@
 
 import { Dispatch, SetStateAction } from "react";
-import { Player } from "../models";
-import { TextField } from "@mui/material";
+import { Player } from "../models/models";
+import { Button, TextField } from "@mui/material";
 
-const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
+const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId, handleResetClick }
     : {
         players: Player[], setPlayers: Dispatch<SetStateAction<Player[]>>,
-        rate: number, setRate: Dispatch<SetStateAction<number>>
-        setChangedPlayerId: Dispatch<SetStateAction<number | null>>
+        rate: number, setRate: Dispatch<SetStateAction<number>>,
+        setChangedPlayerId: Dispatch<SetStateAction<number | null>>,
+        handleResetClick: any
     }) => {
+
+
     const handleNameInputChange = (id: number, e: any) => {
-        setPlayers(players.some(player => player.playerId === id) ?
-            prevPlayers => prevPlayers.map(player => player.playerId === id ? { ...player, name: e.target.value } : player) :
-            [...players, { playerId: id, name: e.target.value }]
-        );
+        const updatedPlayers = players.some(player => player.playerId === id) ?
+            players.map(player => player.playerId === id ? { ...player, name: e.target.value } : player) :
+            [...players, { playerId: id, name: e.target.value }];
+
+        setPlayers(updatedPlayers);
+        localStorage.setItem("players", JSON.stringify(updatedPlayers));
+
         setChangedPlayerId(id);
     }
 
     const handleNameInputBlur = (id: number, e: any) => {
         if (e.target.value.trim() === '') {
-            setPlayers(players.filter(player => player.playerId !== id));
+            const updatedPlayers = players.filter(player => player.playerId !== id);
+            setPlayers(updatedPlayers);
+            localStorage.setItem("players", JSON.stringify(updatedPlayers));
+
+            setChangedPlayerId(id);
         }
     }
 
     const handleRateInputChange = (e: any) => {
         setRate(e.target.value);
+        const rateJson = JSON.stringify(e.target.value);
+        localStorage.setItem("rate", rateJson);
     }
 
     const renderPlayerInput = (id: number) => (
-
         <TextField
             label={`Player#${id}`}
             variant="outlined"
@@ -39,7 +50,6 @@ const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
             value={players.find(player => player.playerId === id)?.name ?? ''}
             onChange={(e) => handleNameInputChange(id, e)}
             onBlur={(e) => handleNameInputBlur(id, e)} />
-
     )
 
     return (<>
@@ -59,11 +69,12 @@ const Setup = ({ players, setPlayers, rate, setRate, setChangedPlayerId }
                 type="text"
                 fullWidth
                 placeholder='Enter Rate'
-
                 value={rate}
                 onChange={handleRateInputChange} />
         </div>
-
+        <Button onClick={handleResetClick}>Reset</Button>
+        {/* <div className="debug-json">{'players: ' + JSON.stringify(players)}</div>
+        <div className="debug-json">{'rate:' + JSON.stringify(rate)}</div> */}
     </>);
 }
 export default Setup;

@@ -1,56 +1,39 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Player, Round, RoundDetail, Score, ScoreDetail } from "../models";
+import { Player, Round, RoundDetail, Score, ScoreDetail } from "../models/models";
 import { Button, Checkbox, FormControlLabel, TextField } from "@mui/material";
 
-const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, changedPlayerId, setChangedPlayerId }
+const Calculator = ({ players, scores, setScores, setTotalScores: setTotalScores, round, setRound }
     : {
         players: Player[],
         scores: Score[], setScores: Dispatch<SetStateAction<Score[]>>,
-        setTotalPoints: Dispatch<SetStateAction<ScoreDetail[]>>,
-        initialRound: Round,
-        changedPlayerId: number | null, setChangedPlayerId: Dispatch<SetStateAction<number | null>>
-
+        setTotalScores: Dispatch<SetStateAction<ScoreDetail[]>>,
+        round: Round, setRound: Dispatch<SetStateAction<Round>>
     }) => {
-    const [round, setRound] = useState<Round>(initialRound);
-
-    // Keep track of players to update the Round
-    useEffect(() => {
-        if (changedPlayerId !== null) {
-            setRound(prevRound => ({
-                ...prevRound,
-                roundDetails: prevRound.roundDetails.some(roundDetail => roundDetail.playerId === changedPlayerId) ?
-                    // Update existing 
-                    [...prevRound.roundDetails]
-                    :
-                    // Create new if not exists
-                    [...prevRound.roundDetails,
-                    { playerId: changedPlayerId, maal: 0, seen: false, winner: false, dubli: false }]
-            }));
-        }
-    }, [players, changedPlayerId])
 
     const handlePointInputChange = (id: number, e: any) => {
-        setRound(prevRound => ({
-            ...prevRound,
-            roundDetails: prevRound.roundDetails.some(roundDetail => roundDetail.playerId === id) ?
+        const updatedRound = {
+            ...round,
+            roundDetails: round.roundDetails.some(roundDetail => roundDetail.playerId === id) ?
                 // Update existing 
-                prevRound.roundDetails.map(roundDetail =>
+                round.roundDetails.map(roundDetail =>
                     roundDetail.playerId === id ?
                         { ...roundDetail, maal: e.target.value } :
                         roundDetail)
                 :
                 // Create new if not exists
-                [...prevRound.roundDetails,
+                [...round.roundDetails,
                 { playerId: id, maal: e.target.value, seen: false, winner: false, dubli: false }]
-        }));
+        };
+        setRound(updatedRound);
+        localStorage.setItem("round", JSON.stringify(updatedRound));
     }
 
     const handleCheckboxInputChange = (id: number, checkboxName: string, e: any) => {
-        setRound(prevRound => ({
-            ...prevRound,
-            roundDetails: prevRound.roundDetails.some(roundDetail => roundDetail.playerId === id) ?
+        const updatedRound = {
+            ...round,
+            roundDetails: round.roundDetails.some(roundDetail => roundDetail.playerId === id) ?
                 // Update existing 
-                prevRound.roundDetails.map(roundDetail =>
+                round.roundDetails.map(roundDetail =>
                     roundDetail.playerId === id ?
                         {
                             ...roundDetail,
@@ -59,7 +42,7 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
                         roundDetail)
                 :
                 // Create new if not exists
-                [...prevRound.roundDetails,
+                [...round.roundDetails,
                 {
                     playerId: id,
                     maal: 0,
@@ -67,7 +50,10 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
                     winner: checkboxName.toLowerCase() === 'winner' && e.target.checked,
                     dubli: checkboxName.toLowerCase() === 'dubli' && e.target.checked
                 }]
-        }));
+        };
+        setRound(updatedRound);
+        localStorage.setItem("round", JSON.stringify(updatedRound));
+
     }
 
     const centerCalculation = (round: Round): Score => {
@@ -128,19 +114,28 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
     }
 
     const handleCalculateClick = () => {
-        const updatedScore: Score = centerCalculation(round);
-        setScores([...scores, updatedScore]);
+        const updatedScore: Score[] = [...scores, centerCalculation(round)];
 
-        //TODO: new round is render on ui but not available to use it on state variable yet. why???
-        const updatedTotalPoints: ScoreDetail[] = totalCalculation([...scores, updatedScore]);
-        setTotalPoints(updatedTotalPoints);
+        setScores(updatedScore);
+        localStorage.setItem("scores", JSON.stringify(updatedScore));
+
+        // Update Total Score
+        const updatedTotalScores: ScoreDetail[] = totalCalculation(updatedScore);
+        setTotalScores(updatedTotalScores);
+        localStorage.setItem('totalScores', JSON.stringify(updatedTotalScores));
 
         // Reset Round
         const newRoundId = round.roundId + 1;
-        const newRoundDetail: RoundDetail[] = round.roundDetails.map(round => {
-            return { ...round, maal: 0, seen: false, winner: false, dubli: false }
-        })
-        setRound({ roundId: newRoundId, roundDetails: newRoundDetail });
+        const newRoundDetail: RoundDetail[] =
+            round.roundDetails.some(roundDetail => roundDetail) ?
+                round.roundDetails.map(roundDetail => {
+                    return { ...roundDetail, maal: 0, seen: false, winner: false, dubli: false }
+                })
+                :
+                [];
+        const newRound = { roundId: newRoundId, roundDetails: newRoundDetail };
+        setRound(newRound);
+        localStorage.setItem("round", JSON.stringify(newRound));
 
     }
 
@@ -181,6 +176,7 @@ const Calculator = ({ players, scores, setScores, setTotalPoints, initialRound, 
                 ))
             }
         </div>
+        {/* <div className="debug-json">{'Round: ' + JSON.stringify(round)}</div> */}
         <div>
             <Button
                 variant="contained"
